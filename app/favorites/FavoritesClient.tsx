@@ -1,28 +1,28 @@
-import Container from "@/components/Container"
-import EmptyState from "@/components/EmptyState"
-import ListingCard from "@/components/listings/ListingCard"
-import getListings, { IListingsParams } from "@/app/actions/getListings"
-import getCurrentUser from "@/app/actions/getCurrentUser"
+"use client"
 
-interface HomeProps {
-  searchParams: IListingsParams
+import Container from "@/components/Container"
+import Heading from "@/components/Heading"
+import ListingCard from "@/components/listings/ListingCard"
+import { SafeListing, SafeUser } from "@/types"
+
+interface FavoritesClientProps {
+  listings: SafeListing[]
+  currentUser?: SafeUser | null
 }
 
-export const dynamic = "force-dynamic"
-
-export default async function Home({ searchParams }: HomeProps) {
-  const listings = await getListings(searchParams)
-  const currentUser = await getCurrentUser()
-
-  if (listings.length === 0) {
-    return <EmptyState showReset />
-  }
-
+const FavoritesClient: React.FC<FavoritesClientProps> = ({
+  listings,
+  currentUser,
+}) => {
   return (
     <Container>
+      <Heading
+        title="Favorites"
+        subtitle="List of places you have favorited!"
+      />
       <div
         className="
-          pt-4
+          mt-10
           grid
           grid-cols-1
           sm:grid-cols-2
@@ -44,3 +44,5 @@ export default async function Home({ searchParams }: HomeProps) {
     </Container>
   )
 }
+
+export default FavoritesClient
