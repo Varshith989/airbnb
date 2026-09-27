@@ -1,7 +1,7 @@
 "use client"
 
-import { useCallback } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { IconType } from "react-icons"
 
 interface CategoryBoxProps {
@@ -15,25 +15,25 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
   label,
   selected,
 }) => {
-  const router = useRouter()
   const params = useSearchParams()
 
-  const handleClick = useCallback(() => {
-    const currentParams = new URLSearchParams(params ? params.toString() : "")
+  const currentParams = new URLSearchParams(params ? params.toString() : "")
 
-    if (currentParams.get("category") === label) {
-      currentParams.delete("category")
-    } else {
-      currentParams.set("category", label)
-    }
+  if (currentParams.get("category") === label) {
+    currentParams.delete("category")
+  } else {
+    currentParams.set("category", label)
+  }
 
-    const url = `/?${currentParams.toString()}`
-    router.push(url)
-  }, [label, params, router])
+  const targetUrl = currentParams.toString()
+    ? `/?${currentParams.toString()}`
+    : "/"
 
   return (
-    <div
-      onClick={handleClick}
+    <Link
+      href={targetUrl}
+      scroll={false}
+      prefetch={true}
       className={`
         flex
         flex-col
@@ -45,12 +45,13 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
         hover:text-neutral-800
         transition
         cursor-pointer
+        select-none
         ${selected ? "border-b-neutral-800 text-neutral-800" : "border-transparent text-neutral-500"}
       `}
     >
       <Icon size={26} />
       <div className="font-medium text-xs whitespace-nowrap">{label}</div>
-    </div>
+    </Link>
   )
 }
 

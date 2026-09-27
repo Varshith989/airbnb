@@ -26,7 +26,9 @@ const Categories = () => {
           items-center
           justify-between
           overflow-x-auto
-          no-scrollbar
+          scroll-smooth
+          gap-4
+          md:gap-6
         "
       >
         {categories.map((item) => (
